@@ -3,32 +3,44 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>GDNM 13 - Interface</title>
+		<script type="text/template" id="template-gallery">	
+				<ul>
+					{{ #media }}
+						<li>
+							{{#video }}
+								<video src="{{ video }}" />
+							{{/video}}
+							
+							{{#image }}
+								<img src="{{ image }}" />
+							{{/image }}
+						</li>
+					{{/media }}
+				</ul>			
+		</script>
+		<script type="text/template" id="template-info">			
+			<h1>{{ name }}</h1>
+			<a>{{ url }}</a>
+			{{#tag}}
+				<img src="{{ tag }}"/>
+			{{/tag}}
+		</script>
 	</head>
 	<body>
-
-
-		<div class="info">
-			
+		<div id="app">			
+			<article id="attractor">
+				
+			</article>
+			<article id="browser">
+				<header></header>	
+				<section></section>
+			</article>
 		</div>
-		
+
 		<script src="/socket.io/socket.io.js"></script>
-		<script>
-			var $info = document.querySelector( '.info' );
-			var socket = io.connect( 'http://localhost');
-			socket.on( 'info', function( data ){
-				console.log( 'DATA RECEIVED: ', data );
-			});
-			socket.on( 'osc-position-change', function( data ){
-				$info.innerText = 'POSITION: ' + data.position;
-			});
-
-			socket.on( 'osc-new', function( data ){
-				$info.innerText = 'NEW: ' + data.url;
-			});
-
-			socket.on( 'osc-disconnect', function( data ){
-				$info.innerText = 'DISCONNECT. SAYS: "' + data.message + '"';
-			});
-		</script>
+		<script src="javascript/libs/jquery-2.0.0.min.js"></script>
+		<script src="javascript/libs/jquery.mustache.js"></script>
+		<script src="javascript/Browser.js"></script>
+		<script src="javascript/main.js"></script>
 	</body>
 </html>

@@ -21,12 +21,13 @@ App.prototype = {
 		this.socketsListen();
 		this.oscListen();
 	},
-	serverRequest: function( request, response ){
+	serverRequest: function( request, response ){	
 		var that = this;
-		fs.readFile( __dirname + '/public/index.html', function( error, data ){
+		var file = ( request.url === '/' ) ? 'index.html' : request.url;
+		fs.readFile( __dirname + '/public/' + file, function( error, data ){
 			if( error ){
 				response.writeHead( 500 );
-				return response.end( 'Error loading index.html' );
+				return response.end( error + 'Error loading ' + request.url );
 			}
 			response.writeHead( 200 );
 			response.end( data );
