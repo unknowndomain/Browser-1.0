@@ -19,13 +19,13 @@
 			// get the containers from the dom
 			this.$browser = $( '#browser', this.$ele );
 			this.$info = $( 'header', this.$browser );
-			this.$gallery = $( 'section', this.$ele );
+			this.$gallery = $( 'section', this.$browser );
 
 			this.$attractor = $( '#attractor', this.$ele );
 		},
 		run: function(){
 			this.socketBindEvents();
-			this.render({
+			this.renderStudent({
 				'name': 'Sam Nguyen',
 				'url': 'http://something.anything.com/anywhere',
 				'media': [
@@ -86,12 +86,12 @@
 		renderStudent: function( data ){
 			var that = this;
 
-			this.$info.one( transitionEndEvents, function(){ 
+			//this.$info.one( transitionEndEvents, function(){ 
 				that.$info.empty().append( this.templates.info( data ) );
-			});
-			this.$gallery.one( transitionEndEvents, function(){ 
+			//});
+			//this.$gallery.one( transitionEndEvents, function(){ 
 				that.$gallery.empty().append( this.templates.gallery( data ) );
-			});
+			//});
 
 			this.$gallery.addClass('hidden');
 			this.$info.addClass('hidden')
