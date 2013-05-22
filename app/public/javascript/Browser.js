@@ -145,20 +145,31 @@
 			var scrollExtent = stripW - gallW;
 			var calculated = scrollExtent * scrollAmount;
 			this.$strip.css( 'transform', 'translate3d(' + calculated + 'px ,0, 0)' );
-			this.checkVideos();
+			this.checkPosition();
 		},
-		checkVideos: function(){
-			var $videos = $( 'video', this.$strip );
+		checkPosition: function(){
+			var $items = $( 'li', this.$strip );
 			var containerW = this.$gallery.width();
 			
-			$videos.each( function(){
+			$items.each( function(){
 				var width =  $(this).width();
 				var left = $(this).offset().left;
 				var right = left + width;
-				if( left > (width*-0.5) && right < containerW + (width*0.5) ){					
-					$(this)[0].play();
-				} else {					
-					$(this)[0].pause();
+				var $thisVideo = $(this).find('video');
+				var $thisImage = $(this).find('img');
+				if( left > width*-1 && right < containerW + width ){
+					// is visible ( at least in part )
+					$(this).addClass( 'visible' );
+					if( left > (width*-0.5) && right < containerW + (width*0.5) ){				
+						if( $thisVideo.length > 0 ){
+							$thisVideo[0].play();
+						}
+					}
+				} else {						
+					$(this).removeClass( 'visible' );
+					if( $thisVideo.length > 0 ){
+						$thisVideo[0].pause();
+					}
 				}
 			});
 		}
