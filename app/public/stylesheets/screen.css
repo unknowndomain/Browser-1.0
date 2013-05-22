@@ -177,8 +177,9 @@ html, body {
 /* line 101, ../sass/screen.scss */
 #browser > section ul {
   height: 100%;
+  font-size: 0;
 }
-/* line 103, ../sass/screen.scss */
+/* line 104, ../sass/screen.scss */
 #browser > section ul li {
   display: -moz-inline-stack;
   display: inline-block;
@@ -188,10 +189,10 @@ html, body {
   *display: inline;
   min-width: auto;
   vertical-align: bottom;
-  margin: 0 -4px;
+  margin: 0;
   padding: 0;
 }
-/* line 110, ../sass/screen.scss */
+/* line 111, ../sass/screen.scss */
 #browser > section ul li img,
 #browser > section ul li video {
   height: 100%;

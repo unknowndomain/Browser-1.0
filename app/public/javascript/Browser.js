@@ -117,16 +117,16 @@
 			var $vids = $( 'video', this.$strip );
 			var vidCount = $vids.length;
 			var vidW = ( this.$strip.height() / 9 ) * 16;
-			var vidWidthAddition = vidW * vidCount;
+			var vidWidthAddition = vidW * vidCount;	
 			var totalW = 0;
 			var toLoad = $imgs.length;
 			var loaded = 0;	
 			$imgs.each( function(){
 				$(this).on( 'load', function(){
 					loaded++;
-					if( loaded === toLoad ){
-						$items.each( function(){
-							totalW += $items.width();
+					if( loaded === toLoad ){						
+						$imgs.each( function(){
+							totalW += $(this).width();
 						});
 						totalW += vidWidthAddition;
 						that.$strip.width( totalW );
