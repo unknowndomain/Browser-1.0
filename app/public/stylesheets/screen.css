@@ -175,9 +175,10 @@ html, body {
   margin: 0;
   padding: 0;
 }
-/* line 92, ../sass/screen.scss */
-#browser > section ul li img {
-  height: auto;
+/* line 93, ../sass/screen.scss */
+#browser > section ul li img,
+#browser > section ul li video {
+  height: 100%;
   max-height: 100%;
   display: block;
   margin: 0;

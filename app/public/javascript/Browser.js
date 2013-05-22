@@ -67,13 +67,19 @@
 			console.log( "DISCONNECT!" );
 		},
 		switchMode: function( mode ){
+			var that = this;
 			if( mode === 'attract' && this.mode !== 'attract' ){				
 				this.$browser.addClass( 'hidden' );
 				this.$gallery.addClass( 'hidden' );
-				this.$attractor.removeClass( 'hidden' );				
+				setTimeout( function(){
+					that.$attractor.removeClass( 'hidden' );				
+				}, _anim );
+				
 			} else if( mode === 'browse' && this.mode !== 'browse' ){			
 				this.$attractor.addClass( 'hidden' );
-				this.$browser.removeClass( 'hidden' );
+				setTimeout( function(){
+					that.$browser.removeClass( 'hidden' );
+				}, _anim );
 			}
 			this.mode = mode;
 		},
@@ -98,6 +104,7 @@
 						setTimeout( function(){
 							// show the images
 							that.$gallery.removeClass( 'hidden' );
+							that.checkVideos();
 						}, _anim * 0.5 );
 					}, 1000);				
 				});				
@@ -107,6 +114,10 @@
 			var that = this;
 			var $imgs = $( 'img', this.$strip );
 			var $items = $( 'li', this.$strip );
+			var $vids = $( 'video', this.$strip );
+			var vidCount = $vids.length;
+			var vidW = ( this.$strip.height() / 9 ) * 16;
+			var vidWidthAddition = vidW * vidCount;
 			var totalW = 0;
 			var toLoad = $imgs.length;
 			var loaded = 0;	
@@ -117,6 +128,7 @@
 						$items.each( function(){
 							totalW += $items.width();
 						});
+						totalW += vidWidthAddition;
 						that.$strip.width( totalW );
 
 						if( typeof callback === 'function' ){
@@ -131,10 +143,8 @@
 			var gallW = this.$gallery.width();
 			var stripW = this.$strip.width();
 			var scrollExtent = stripW - gallW;
-			var calculated = scrollExtent * scrollAmount;
-			
+			var calculated = scrollExtent * scrollAmount;			
 			this.$strip.css( 'transform', 'translate3d(' + calculated + 'px ,0, 0)' );
-
 			this.checkVideos();
 		},
 		checkVideos: function(){
@@ -142,12 +152,15 @@
 			var containerW = this.$gallery.width();
 			
 			$videos.each( function(){
+				var width =  $(this).width();
 				var left = $(this).offset().left;
-				var right = left + $(this).width();
-				if( left > 0 && right < containerW ){
-					//play video
+				var right = left + width;
+				if( left > (width*-0.5) && right < containerW + (width*0.5) ){
+					console.log( 'play' );
+					$(this)[0].play();
 				} else {
-					//pause video
+					console.log( 'pause' );
+					$(this)[0].pause();
 				}
 			});
 		}
