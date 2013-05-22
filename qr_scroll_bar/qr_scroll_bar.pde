@@ -88,12 +88,12 @@ void draw() {
         float new_position = map( points[0].getX(), left_edge, width - right_edge, 0, 1 );
         
         // Compare new position to old and if change is significant send an OSC message
-        if ( abs( new_position - position ) > 0.0001 ) {
+//        if ( abs( new_position - position ) > 0.0001 ) {
             // Send new position
             OscMessage position_msg = new OscMessage( "/position" );
             position_msg.add( position );
             oscP5.send( position_msg, destination );
-        }
+//        }
         
         // Store new position
         position = new_position;
@@ -108,7 +108,7 @@ void draw() {
       }
     } 
     catch ( Exception e ) {
-      if ( last_detect < ( millis() - 1000 ) && qr_present == true ) {
+      if ( last_detect < ( millis() - 2000 ) && qr_present == true ) {
             msg = "";
             qr_present = false;
             OscMessage position_msg = new OscMessage( "/msg" );
