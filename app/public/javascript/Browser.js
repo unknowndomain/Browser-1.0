@@ -164,6 +164,10 @@
 						if( $thisVideo.length > 0 ){
 							$thisVideo[0].play();
 						}
+					} else {
+						if( $thisVideo.length > 0 ){
+							$thisVideo[0].pause();
+						}
 					}
 				} else {						
 					$(this).removeClass( 'visible' );
