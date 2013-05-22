@@ -58,8 +58,7 @@
 			}
 		},
 		onUrlMessage: function( data ){			
-			this.switchMode( 'browse' );
-			console.log( 'render a student?' );
+			this.switchMode( 'browse' );			
 			this.renderStudent( data );
 		},
 		onDisconnectMessage: function( data ){	
@@ -135,6 +134,22 @@
 			var calculated = scrollExtent * scrollAmount;
 			
 			this.$strip.css( 'transform', 'translate3d(' + calculated + 'px ,0, 0)' );
+
+			this.checkVideos();
+		},
+		checkVideos: function(){
+			var $videos = $( 'video', this.$strip );
+			var containerW = this.$gallery.width();
+			
+			$videos.each( function(){
+				var left = $(this).offset().left;
+				var right = left + $(this).width();
+				if( left > 0 && right < containerW ){
+					//play video
+				} else {
+					//pause video
+				}
+			});
 		}
 	};
 
