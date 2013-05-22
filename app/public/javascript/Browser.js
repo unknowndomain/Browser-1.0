@@ -72,6 +72,7 @@
 		},
 		onDisconnectMessage: function( data ){	
 			this.switchMode( 'attract' );
+			console.log( "DISCONNECT!" );
 		},
 		switchMode: function( mode ){
 			this.mode = mode;
