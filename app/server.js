@@ -57,6 +57,7 @@ App.prototype = {
 									that.socket.emit( 'osc-new', data );
 								} else {
 									console.log( e );
+									that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
 								}
 							} );
 						} else {
