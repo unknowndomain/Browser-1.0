@@ -78,7 +78,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   opacity: 1;
 }
 /* line 16, ../sass/screen.scss */
-.hideable .hidden {
+.hideable.hidden {
   opacity: 0;
 }
 
@@ -117,6 +117,7 @@ html, body {
   margin-top: -9em;
   width: 100%;
   text-align: center;
+  z-index: 1;
 }
 /* line 53, ../sass/screen.scss */
 #browser > header h1 {
@@ -148,19 +149,22 @@ html, body {
 }
 /* line 75, ../sass/screen.scss */
 #browser > section {
+  position: absolute;
+  top: 0;
+  left: 0;
   overflow: hidden;
   width: 100%;
   height: 100%;
+  z-index: 0;
 }
-/* line 80, ../sass/screen.scss */
+/* line 83, ../sass/screen.scss */
 #browser > section ul {
-  vertical-align: bottom;
   width: 3000px;
-  height: 80%;
-  margin-top: 10%;
+  height: 100%;
 }
 /* line 86, ../sass/screen.scss */
 #browser > section ul li {
+  min-width: auto;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: middle;
@@ -168,11 +172,14 @@ html, body {
   zoom: 1;
   *display: inline;
   vertical-align: bottom;
-  margin: 0 2%;
+  margin: 0;
+  padding: 0;
 }
-/* line 91, ../sass/screen.scss */
+/* line 92, ../sass/screen.scss */
 #browser > section ul li img {
   height: auto;
   max-height: 100%;
   display: block;
+  margin: 0 0 0 -10px;
+  padding: 0;
 }

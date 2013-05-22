@@ -23,6 +23,11 @@
 			this.$gallery = $( 'section', this.$browser );
 			this.$strip = $(); //we will cache this when a tempolate is rendered
 			this.$attractor = $( '#attractor', this.$ele );
+
+			$( window ).on( 'resize', function(){
+				window.location = window.location;
+			});
+
 		},
 		run: function(){
 			this.socketBindEvents();
@@ -58,13 +63,15 @@
 			this.renderStudent( data );
 		},
 		onDisconnectMessage: function( data ){	
+			console.log( this.mode );
 			this.switchMode( 'attract' );
 			console.log( "DISCONNECT!" );
 		},
 		switchMode: function( mode ){
 			if( mode === 'attract' && this.mode !== 'attract' ){				
 				this.$browser.addClass( 'hidden' );
-				this.$attractor.removeClass( 'hidden' );
+				this.$gallery.addClass( 'hidden' );
+				this.$attractor.removeClass( 'hidden' );				
 			} else if( mode === 'browse' && this.mode !== 'browse' ){			
 				this.$attractor.addClass( 'hidden' );
 				this.$browser.removeClass( 'hidden' );
@@ -79,20 +86,46 @@
 
 			setTimeout( function(){
 				that.$info.empty().append( that.templates.info( data ) );
-				that.$gallery.empty().append( that.templates.gallery( data ) );
+				that.$gallery.empty().append( that.templates.gallery( data ) );	
 				// cache the scrollable strip for speed
 				that.$strip = $( '.scrollable', this.$gallery );
-				// show the title (for a while)
-				that.$info.removeClass( 'hidden' );
-				setTimeout( function(){	
-					// hide the title
-					that.$info.addClass( 'hidden' );					
-					setTimeout( function(){
-						// show the images
-						that.$gallery.removeClass( 'hidden' );
-					}, _anim * 0.5 );
-				}, 3000);				
+				//lay out the gallery
+				that.setupGallery( function(){
+					// show the title (for a while)
+					that.$info.removeClass( 'hidden' );
+					setTimeout( function(){	
+						// hide the title
+						that.$info.addClass( 'hidden' );					
+						setTimeout( function(){
+							// show the images
+							that.$gallery.removeClass( 'hidden' );
+						}, _anim * 0.5 );
+					}, 1000);				
+				});				
 			}, _anim );
+		},
+		setupGallery: function( callback ){			
+			var that = this;
+			var $imgs = $( 'img', this.$strip );
+			var $items = $( 'li', this.$strip );
+			var totalW = 0;
+			var toLoad = $imgs.length;
+			var loaded = 0;	
+			$imgs.each( function(){				
+				$(this).on( 'load', function(){
+					loaded++;
+					if( loaded === toLoad ){
+						$items.each( function(){
+							totalW += $items.width();
+						});
+						that.$strip.width( totalW );
+
+						if( typeof callback === 'function' ){
+							callback();
+						}
+					}
+				});
+			});			
 		},
 		scrollStudent: function( amount ){						
 			var scrollAmount = amount * -1;
