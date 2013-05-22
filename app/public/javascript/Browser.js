@@ -117,7 +117,8 @@
 			var $vids = $( 'video', this.$strip );
 			var vidCount = $vids.length;
 			var vidW = ( this.$strip.height() / 9 ) * 16;
-			var vidWidthAddition = vidW * vidCount;
+			var vidWidthAddition = vidW * vidCount;			
+			console.log( vidW, vidCount, vidWidthAddition );
 			var totalW = 0;
 			var toLoad = $imgs.length;
 			var loaded = 0;	
@@ -155,11 +156,9 @@
 				var width =  $(this).width();
 				var left = $(this).offset().left;
 				var right = left + width;
-				if( left > (width*-0.5) && right < containerW + (width*0.5) ){
-					console.log( 'play' );
+				if( left > (width*-0.5) && right < containerW + (width*0.5) ){					
 					$(this)[0].play();
-				} else {
-					console.log( 'pause' );
+				} else {					
 					$(this)[0].pause();
 				}
 			});

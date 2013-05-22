@@ -159,10 +159,9 @@ html, body {
 }
 /* line 83, ../sass/screen.scss */
 #browser > section ul {
-  width: 3000px;
   height: 100%;
 }
-/* line 86, ../sass/screen.scss */
+/* line 85, ../sass/screen.scss */
 #browser > section ul li {
   min-width: auto;
   display: -moz-inline-stack;
@@ -175,7 +174,7 @@ html, body {
   margin: 0;
   padding: 0;
 }
-/* line 93, ../sass/screen.scss */
+/* line 92, ../sass/screen.scss */
 #browser > section ul li img,
 #browser > section ul li video {
   height: 100%;
