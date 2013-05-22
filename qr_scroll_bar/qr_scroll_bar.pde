@@ -22,6 +22,10 @@ String msg = "";
 long last_detect = 0;
 boolean qr_present = false;
 
+// Modes
+boolean debug = true;
+boolean calibration = false;
+
 void setup() {
   // Setup canvas
   size( 1280, 720 );
@@ -77,19 +81,9 @@ void draw() {
         // Get the location data.
         ResultPoint[] points = result.getResultPoints();
 
-        // Continuous calibration
+        if ( calibration )
+          calibrate( points[0].getX() );
         
-        // If the left edge is greater than the QR code position recalibrate
-        if ( left_edge > points[0].getX() )
-          left_edge = points[0].getX();
-
-        // If the right edge is less than than the QR code position recalibrate
-        if ( width - points[0].getX() < right_edge )
-          right_edge = width - points[0].getX();
-
-        // Draw a progress bar at the bottom
-        rect( 0, height - 10, map( points[0].getX(), left_edge, width - right_edge, 0, width ), height );
-
         // Calculate a new position number
         float new_position = map( points[0].getX(), left_edge, width - right_edge, 0, 1 );
         
@@ -123,4 +117,25 @@ void draw() {
       }
     }
   }
+  println(key);
+}
+
+void keyPressed() {
+  if ( key == 'c' ) {
+    calibration = ! calibration;
+  }
+}
+
+void calibrate( float x ) {
+      // If the left edge is greater than the QR code position recalibrate
+      if ( x < width / 2 )
+        left_edge = x;
+
+      // If the right edge is less than than the QR code position recalibrate
+      if ( x > width / 2 )
+        right_edge = width - x;
+
+      // Draw a progress bar at the bottom
+      rect( 0, height - 10, map( x, left_edge, width - right_edge, 0, width ), height );
+
 }
