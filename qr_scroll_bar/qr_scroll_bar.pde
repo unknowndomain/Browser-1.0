@@ -29,12 +29,12 @@ boolean calibration = false;
 void setup() {
   // Setup canvas
   size( 1280, 720 );
-  stroke(255);
-  fill( 255 );
+  noSmooth();
+  textAlign( CENTER );
 
   // Setup camera and open camera settings
   cam = new Capture( this, width, height, Capture.list()[3], 30 );
-  cam.settings();
+//  cam.settings();
   
   // Start OSC
   oscP5 = new OscP5( this, 8000 );
@@ -43,8 +43,9 @@ void setup() {
 }
 
 void draw() {
-   // If new camera data is available
+  // If new camera data is available
   if ( cam.available() == true ) {
+    stroke(255);
 
     // Read the data
     cam.read();
@@ -88,12 +89,19 @@ void draw() {
         float new_position = map( points[0].getX(), left_edge, width - right_edge, 0, 1 );
         
         // Compare new position to old and if change is significant send an OSC message
-//        if ( abs( new_position - position ) > 0.0001 ) {
+        if ( abs( new_position - position ) > 0.001 ) {
+          
+            if ( position > 1.0 )
+              position = 1.0;
+          
+            if ( position < 0.0 )
+              position = 0.0;
+          
             // Send new position
             OscMessage position_msg = new OscMessage( "/position" );
             position_msg.add( position );
             oscP5.send( position_msg, destination );
-//        }
+        }
         
         // Store new position
         position = new_position;
@@ -108,7 +116,7 @@ void draw() {
       }
     } 
     catch ( Exception e ) {
-      if ( last_detect < ( millis() - 2000 ) && qr_present == true ) {
+      if ( last_detect < ( millis() - 1500 ) && qr_present == true ) {
             msg = "";
             qr_present = false;
             OscMessage position_msg = new OscMessage( "/msg" );
@@ -116,8 +124,14 @@ void draw() {
             oscP5.send( position_msg, destination );
       }
     }
+    if ( calibration ) {
+      noStroke();
+      fill( 255, 0, 0 );
+      rect( 0, 0, width, 25 );
+      fill( 255 );
+      text( "CALIBRATION MODE", width / 2 , 17 );
+    }
   }
-  println(key);
 }
 
 void keyPressed() {
