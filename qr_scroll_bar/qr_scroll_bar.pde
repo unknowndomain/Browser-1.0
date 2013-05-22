@@ -23,25 +23,23 @@ long last_detect = 0;
 boolean qr_present = false;
 
 // Modes
-boolean debug = true;
 boolean calibration = false;
 
 void setup() {
   // Setup canvas
-  size( 1280, 720 );
+  size( 1280, 800 );
   noSmooth();
   textAlign( CENTER );
   
   // Load existing calibration data
   loadCalibration();
-
+    
   // Setup camera and open camera settings
   cam = new Capture( this, width, height, Capture.list()[3], 30 );
   
   // Start OSC
   oscP5 = new OscP5( this, 8000 );
   destination = new NetAddress( "127.0.0.1", 8000 );
-  
 }
 
 void draw() {
