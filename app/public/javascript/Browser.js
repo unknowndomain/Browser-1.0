@@ -100,29 +100,28 @@
 					that.$info.removeClass( 'hidden' );
 					setTimeout( function(){	
 						// hide the title
-						that.$info.addClass( 'hidden' );					
+						that.$info.addClass( 'hidden' );
 						setTimeout( function(){
 							// show the images
 							that.$gallery.removeClass( 'hidden' );
 							that.checkVideos();
 						}, _anim * 0.5 );
-					}, 1000);				
-				});				
+					}, 1000);
+				});
 			}, _anim );
 		},
-		setupGallery: function( callback ){			
+		setupGallery: function( callback ){
 			var that = this;
 			var $imgs = $( 'img', this.$strip );
 			var $items = $( 'li', this.$strip );
 			var $vids = $( 'video', this.$strip );
 			var vidCount = $vids.length;
 			var vidW = ( this.$strip.height() / 9 ) * 16;
-			var vidWidthAddition = vidW * vidCount;			
-			console.log( vidW, vidCount, vidWidthAddition );
+			var vidWidthAddition = vidW * vidCount;
 			var totalW = 0;
 			var toLoad = $imgs.length;
 			var loaded = 0;	
-			$imgs.each( function(){				
+			$imgs.each( function(){
 				$(this).on( 'load', function(){
 					loaded++;
 					if( loaded === toLoad ){
@@ -137,14 +136,14 @@
 						}
 					}
 				});
-			});			
+			});
 		},
-		scrollStudent: function( amount ){						
+		scrollStudent: function( amount ){
 			var scrollAmount = amount * -1;
 			var gallW = this.$gallery.width();
 			var stripW = this.$strip.width();
 			var scrollExtent = stripW - gallW;
-			var calculated = scrollExtent * scrollAmount;			
+			var calculated = scrollExtent * scrollAmount;
 			this.$strip.css( 'transform', 'translate3d(' + calculated + 'px ,0, 0)' );
 			this.checkVideos();
 		},
