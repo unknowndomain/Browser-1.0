@@ -1,2 +1,4 @@
-
-qr_scroll_bar/.DS_Store
+.DS_Store
+.sass-cache
+Interface Template/config.rb
+webfonts
