@@ -13,8 +13,8 @@ OscP5 oscP5;
 NetAddress destination;
 
 // Calibration positions
-float left_edge = 500;
-float right_edge = 500;
+float left_edge = 50;
+float right_edge = 50;
 
 // QR code globals
 float position = 0.0;
@@ -31,10 +31,12 @@ void setup() {
   size( 1280, 720 );
   noSmooth();
   textAlign( CENTER );
+  
+  // Load existing calibration data
+  loadCalibration();
 
   // Setup camera and open camera settings
   cam = new Capture( this, width, height, Capture.list()[3], 30 );
-//  cam.settings();
   
   // Start OSC
   oscP5 = new OscP5( this, 8000 );
@@ -137,19 +139,37 @@ void draw() {
 void keyPressed() {
   if ( key == 'c' ) {
     calibration = ! calibration;
+    if ( ! calibration ) { 
+      saveCalibration();
+    }
   }
 }
 
 void calibrate( float x ) {
-      // If the left edge is greater than the QR code position recalibrate
-      if ( x < width / 2 )
-        left_edge = x;
+  // If the left edge is greater than the QR code position recalibrate
+  if ( x < width / 2 )
+    left_edge = x;
+  
+  // If the right edge is less than than the QR code position recalibrate
+  if ( x > width / 2 )
+    right_edge = width - x;
+  
+  // Draw a progress bar at the bottom
+  rect( 0, height - 10, map( x, left_edge, width - right_edge, 0, width ), height );
+}
 
-      // If the right edge is less than than the QR code position recalibrate
-      if ( x > width / 2 )
-        right_edge = width - x;
+void loadCalibration() {
+  String calibration[] = loadStrings( "cal.txt" );
+  if ( calibration != null ) {
+    left_edge = Float.parseFloat( calibration[0] );
+    right_edge = Float.parseFloat( calibration[1] );
+    println( "Calibration Loaded." );
+  }
+}
 
-      // Draw a progress bar at the bottom
-      rect( 0, height - 10, map( x, left_edge, width - right_edge, 0, width ), height );
-
+void saveCalibration() {
+  String calibration[] = new String[2];
+  calibration[0] = nf( left_edge, 0, 0 );
+  calibration[1] = nf( right_edge, 0, 0 );
+  saveStrings( "cal.txt", calibration );
 }
