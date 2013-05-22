@@ -108,9 +108,8 @@ html, body {
   width: 3000px;
   height: 80%;
   margin-top: 10%;
-  /* 		display: re; */
 }
-/* line 47, ../sass/screen.scss */
+/* line 46, ../sass/screen.scss */
 #gallery ul li {
   display: -moz-inline-stack;
   display: inline-block;
@@ -121,7 +120,7 @@ html, body {
   vertical-align: bottom;
   margin: 0 2%;
 }
-/* line 52, ../sass/screen.scss */
+/* line 51, ../sass/screen.scss */
 #gallery ul li img {
   height: auto;
   max-height: 100%;
