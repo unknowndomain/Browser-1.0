@@ -1,0 +1,99 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+@import "../assets/webfonts/scriber-reg.css";
+@import "../assets/webfonts/scriber-bold.css";
+
+$anim: .5;
+
+.hideable{
+	@include transition( opacity $anim+s ease-in-out );
+	opacity: 1;
+	.hidden{
+		opacity: 0;
+	}	
+}
+
+
+html, body {	
+	width: 100%;
+	height: 100%;
+}
+
+#app{
+	width: 100%;
+	height: 100%;
+	&>article{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		&#attractor{
+			z-index: 5;
+		}
+		&#browser{
+			z-index: 2;
+		}
+	}
+}
+
+#browser{
+	&>header{
+		position: absolute;
+		width: 100%;
+		height: 18em;
+		top: 50%;
+		margin-top: -9em;
+		width: 100%;
+		text-align: center;
+
+		h1 {
+			font-family: "Scriber Bold";
+			font-size: 3em;	
+			line-height: 1.3em;
+			text-transform: uppercase;	
+		}		
+		a {
+			display: block;
+			font-family: "Scriber Regular";
+			letter-spacing: 1px;
+			font-size: 2em;
+			margin-bottom: .9em;
+			color: blue;
+		}
+		img{
+			@include inline-block;
+			width: 10em;
+			height: 10em;
+			background: #CCCCCC; 
+		}
+	}
+
+	&>section{
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+
+		ul {
+			vertical-align: bottom;
+			width: 3000px;
+			height: 80%;
+			margin-top: 10%;
+			
+			li {
+				@include inline-block;
+				vertical-align: bottom;
+				margin: 0 2%;
+				
+				img {
+					height: auto;
+					max-height: 100%;
+					display: block;
+				}
+			}
+		}		
+	}
+}
