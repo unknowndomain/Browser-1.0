@@ -56,7 +56,7 @@
 				that.onUrlMessage( data );
 			});
 			this.socket.on( 'osc-disconnect', function( data ){
-				console.log( $info.innerText = 'DISCONNECT. SAYS: "' + data.message + '"' );
+				console.log( that.$info.innerText = 'DISCONNECT. SAYS: "' + data.message + '"' );
 				that.onDisconnectMessage( data );
 			});
 		},
