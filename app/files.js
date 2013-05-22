@@ -1,9 +1,9 @@
 var fs = require('fs');
-var directory = "../Data/";
 
 function getStudent( url, callback ) {
 	var e;
 	var regex = "^http://open.gdnm.org/([a-z-]+)$";
+	var directory = "../Data/";
 
 	// Check URL format is okay
 	if ( url.match( regex ) ) {
@@ -95,8 +95,4 @@ function getStudent( url, callback ) {
 	}
 }
 
-// Example call
-getStudent( "http://open.gdnm.org/sam-nguyen", function ( e, student ) {
-	console.log( e );
-	console.log( student );
-} );
+module.exports.getStudent = getStudent;
