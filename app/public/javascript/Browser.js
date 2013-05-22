@@ -77,15 +77,15 @@
 			this.mode = mode;
 			if( this.mode === 'attract' ){
 				this.$browser.addClass( 'hidden' );
-				this.$attract.removeClass( 'hidden' );
+				this.$attractor.removeClass( 'hidden' );
 			} else {
-				this.$attract.removeClass( 'hidden' );
+				this.$attractor.removeClass( 'hidden' );
 				this.$browser.addClass( 'hidden' );
 			}
 		},
 		renderStudent: function( data ){
 			var that = this;
-
+			console.log( data );
 			//this.$info.one( transitionEndEvents, function(){ 
 				that.$info.empty().append( this.templates.info( data ) );
 			//});
