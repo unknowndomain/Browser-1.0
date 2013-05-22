@@ -2,7 +2,8 @@
 var osc = require( 'node-osc' ),
 	http = require('http'),
 	ws = require( 'socket.io' ),
-	fs = require( 'fs' );
+	fs = require( 'fs' ),
+	gs = require( './files.js' );
 
 var App = function(){
 	this.server
@@ -51,7 +52,13 @@ App.prototype = {
 					break;
 					case "/msg":
 						if( msg[1].length > 0){
-							that.socket.emit( 'osc-new', { url: msg[1] } );
+							gs.getStudent( msg[1], function ( e, data ) { 
+								if ( ! e ) {
+									that.socket.emit( 'osc-new', data );
+								} else {
+									console.log( e );
+								}
+							} );
 						} else {
 							that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
 						}
@@ -64,5 +71,4 @@ App.prototype = {
 
 
 var interactiveBrowser = new App();
-
 interactiveBrowser.begin();
