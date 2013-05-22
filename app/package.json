@@ -1,0 +1,19 @@
+{
+  "name": "interactive-browser",
+  "version": "0.0.0",
+  "description": "An interface/OSC communicator for the GDNM 2013 Show interactive.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:gdnm/Interactive-Browser.git"
+  },
+  "author": "Oliver Smith & Tom Lynch",
+  "license": "MIT",
+  "dependencies": {
+    "node-osc": "~0.1.2",
+    "socket.io": "~0.9.14"
+  }
+}

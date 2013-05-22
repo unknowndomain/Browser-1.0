@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>GDNM 13 - Interface</title>
+	</head>
+	<body>
+
+
+		<div class="info">
+			
+		</div>
+		
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var $info = document.querySelector( '.info' );
+			var socket = io.connect( 'http://localhost');
+			socket.on( 'info', function( data ){
+				console.log( 'DATA RECEIVED: ', data );
+			});
+			socket.on( 'osc-position-change', function( data ){
+				$info.innerText = 'POSITION: ' + data.position;
+			});
+
+			socket.on( 'osc-new', function( data ){
+				$info.innerText = 'NEW: ' + data.url;
+			});
+
+			socket.on( 'osc-disconnect', function( data ){
+				$info.innerText = 'DISCONNECT. SAYS: "' + data.message + '"';
+			});
+		</script>
+	</body>
+</html>
