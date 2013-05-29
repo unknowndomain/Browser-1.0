@@ -64,21 +64,13 @@ void draw() {
 
       // If a QR code is found
       if ( result.getText() != null ) {
-
-        // Compare QR code message to previous message to detect change
-        if ( msg.equals( result.getText() ) != true  ) {
-          qr_present = true;
           OscMessage decoded_msg = new OscMessage( "/qr" );
           decoded_msg.add( result.getText() );
           oscP5.send( decoded_msg, destination );
-        }
-
-        // Store current decoded message
-        msg = result.getText();
 
         // Render position and content info
         textSize( 12 );
-        text( msg, width / 2, height - 25 );
+        text( result.getText(), width / 2, height - 25 );
 
         // Store last capture time
         last_detect = millis();
