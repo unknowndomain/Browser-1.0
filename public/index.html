@@ -6,6 +6,11 @@
 		<link rel="stylesheet" href="stylesheets/screen.css">
 		<script type="text/template" id="template-gallery">	
 				<ul class="scrollable" class="hideable">
+					{{ #blurb }}
+						<li>
+							{{{ blurb }}}
+						</li>
+					{{/blurb}}
 					{{ #media }}
 						<li>
 							{{#video }}

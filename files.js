@@ -5,6 +5,19 @@ function getStudent( url, callback ) {
 	var regex = "^http://open.gdnm.org/([a-z-]+)$";
 	var webroot = "public/";
 	var directory = "data/";
+	var textToParagraphs = function( string ){
+		if( string ){
+			var sections = string.split('\n');
+			var paras = [];
+			for( var i = 0; i < sections.length; i++ ){
+				if( sections[i].length > 0 ){
+					paras.push( '<p>' + sections[i] +'</p>');
+				}
+			}
+			return paras.join('');
+		}
+		return false;
+	};	
 
 	// Check URL format is okay
 	if ( url.match( regex ) ) {
@@ -79,7 +92,7 @@ function getStudent( url, callback ) {
 							if ( exists ) {
 								fs.readFile( webroot + directory + student + "/blurb.txt", "utf8", function ( e, data ) {
 									if ( ! e ) {
-										json["blurb"] = data;
+										json["blurb"] = textToParagraphs( data );
 										console.log( json['blurb'] );
 									} else {
 										console.log( "Blurb error" );
