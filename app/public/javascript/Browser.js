@@ -1,5 +1,4 @@
 ( function( $, M, io, undefined ){
-	var transitionEndEvents = "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd";
 	var _anim = 500;
 
 	var InteractiveBrowser = function( ele, _socketUrl ){
