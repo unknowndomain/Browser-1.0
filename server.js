@@ -1,16 +1,17 @@
 //require necessary packages
-var osc = require( 'node-osc' ),
-	http = require('http'),
+var http = require('http'),
 	ws = require( 'socket.io' ),
 	fs = require( 'fs' ),
-	gs = require( './files.js' );
-
+	gs = require( './files.js' ),
+	SerialPort = require( 'serialport' ).SerialPort;
+	
 var App = function(){
+	this.arduino;
 	this.server
 	this.io;
 	this.isSocketConnected = false
 	this.socket;
-	this.oscServer;
+	this.cardSensor = 0;
 };
 
 App.prototype = {
@@ -18,9 +19,9 @@ App.prototype = {
 		this.server = http.createServer( this.serverRequest );
 		this.server.listen( 3000 );
 		this.io = ws.listen( this.server, { log: false } );
-		this.oscServer = new osc.Server( 8000, '127.0.0.1' );
 		this.socketsListen();
-		this.oscListen();
+		this.arduino = new SerialPort( "/dev/tty.usbmodemfa121", { baudrate: 115200, buffersize: 255 * 5 } );
+		this.arduinoListen();
 	},
 	serverRequest: function( request, response ){	
 		var that = this;
@@ -37,39 +38,55 @@ App.prototype = {
 	socketsListen: function(){
 		var that = this;
 		this.io.sockets.on( 'connection', function( socket ){
+			console.log( "* Connected to Chrome WebSocket." );
 			that.socket = socket;
 			that.isSocketConnected = true;
-			that.socket.emit( 'info', { connected: true } );			
+			that.socket.emit( 'info', { connected: true } );
 		});
 	},
-	oscListen: function(){
+	arduinoListen: function () {
 		var that = this;
-		this.oscServer.on( "message", function( msg, rinfo ){
-			if( that.isSocketConnected ){
-				switch( msg[0] ){
-					case "/position":					
-						that.socket.emit( 'osc-position-change', { position: msg[1] } );
-					break;
-					case "/msg":
-						if( msg[1].length > 0){
-							gs.getStudent( msg[1], function ( e, data ) { 
-								if ( ! e ) {
-									that.socket.emit( 'osc-new', data );
-								} else {
-									console.log( e );
-									that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
-								}
-							} );
-						} else {
-							that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
-						}
-					break;
+		this.arduino.on( 'open', function () {
+			console.log( "* Connected to Arduino." );
+			that.arduino.on( 'data', function( data ) {
+				data = data.toString().trim();
+				if ( data.match( "^(0|1),([0-9]{1,4})$" ) ) {
+					var button = parseInt( data.match( "^(0|1),([0-9]{1,4})$" ).slice(1)[0] );
+					var slider = parseInt( data.match( "^(0|1),([0-9]{1,4})$" ).slice(1)[1] );
+					
+					if ( that.isSocketConnected )
+						if ( that.cardSensor != button )
+							that.sensorListen( that.cardSensor, button );
+						
+					that.cardSensor = button;
+					
+					if ( that.isSocketConnected )
+						that.socket.emit( 'osc-position-change', { position: mapValue( slider, 0, 1023, 0, 10 ) } );
+				}				
+	    	} );
+		} );
+	},
+	sensorListen: function( oldValue, newValue ) {
+		var that = this;
+		
+		if ( oldValue && ! newValue )
+			that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
+			
+		if ( ! oldValue && newValue )
+			gs.getStudent( "http://open.gdnm.org/alba-santiago-blair", function ( e, data ) { 
+				if ( ! e ) {
+					that.socket.emit( 'osc-new', data );
+				} else {
+					console.log( e );
+					that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
 				}
-			}
-		});
+			} );
 	}
 }
 
-
 var interactiveBrowser = new App();
 interactiveBrowser.begin();
+
+mapValue = function( val, origMin, origMax, newMin, newMax ){
+	return newMin + ( newMax - newMin ) * ( ( val - origMin ) / ( origMax - origMin ) );
+};

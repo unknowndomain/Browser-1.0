@@ -80,7 +80,6 @@ function getStudent( url, callback ) {
 								fs.readFile( webroot + directory + student + "/blurb.txt", "utf8", function ( e, data ) {
 									if ( ! e ) {
 										json["blurb"] = data;
-										console.log( json['blurb'] );
 									} else {
 										console.log( "Blurb error" );
 									}
