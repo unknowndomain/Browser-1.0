@@ -7,8 +7,10 @@
 		<script type="text/template" id="template-gallery">	
 				<ul class="scrollable" class="hideable">
 					{{ #blurb }}
-						<li>
-							{{{ blurb }}}
+						<li class="blurb">
+							{{ #text }}
+								<p>{{ . }}</p>
+							{{/ text }}
 						</li>
 					{{/blurb}}
 					{{ #media }}

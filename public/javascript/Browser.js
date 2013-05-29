@@ -139,10 +139,12 @@
 			var that = this;
 			var $imgs = $( 'img', this.$strip );
 			var $items = $( 'li', this.$strip );
+			var $text = $( '.blurb', this.$strip );
 			var $vids = $( 'video', this.$strip );
 			var vidCount = $vids.length;
 			var vidW = ( this.$strip.height() / 9 ) * 16;
 			var vidWidthAddition = vidW * vidCount;	
+			var textW = $text.width();
 			var totalW = 0;
 			var toLoad = $imgs.length;
 			var loaded = 0;	
@@ -154,6 +156,7 @@
 							totalW += $(this).width();
 						});
 						totalW += vidWidthAddition;
+						totalW += textW;
 						that.$strip.width( totalW );
 
 						if( typeof callback === 'function' ){

@@ -11,10 +11,10 @@ function getStudent( url, callback ) {
 			var paras = [];
 			for( var i = 0; i < sections.length; i++ ){
 				if( sections[i].length > 0 ){
-					paras.push( '<p>' + sections[i] +'</p>');
+					paras.push( sections[i] );
 				}
 			}
-			return paras.join('');
+			return paras;
 		}
 		return false;
 	};	
@@ -92,7 +92,7 @@ function getStudent( url, callback ) {
 							if ( exists ) {
 								fs.readFile( webroot + directory + student + "/blurb.txt", "utf8", function ( e, data ) {
 									if ( ! e ) {
-										json["blurb"] = textToParagraphs( data );
+										json["blurb"] = {'text': textToParagraphs( data ) };
 										console.log( json['blurb'] );
 									} else {
 										console.log( "Blurb error" );

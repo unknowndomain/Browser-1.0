@@ -18,6 +18,9 @@ $anim: .5;
 	}
 }
 
+*{
+	@include box-sizing( border-box );
+}
 
 html, body {
 	width: 100%;
@@ -115,6 +118,18 @@ html, body {
 					display: block;
 					margin: 0;
 					padding: 0;
+				}
+				&.blurb{
+					padding: 2rem 0 2rem 0;
+					width: 600px;
+					font-family: "Scriber Regular";
+					p{
+						font-size: 2rem;
+						line-height: 1.3em;
+						color: #FFFFFF;						
+						margin-bottom: 1em;
+						padding: 0 4rem 0 2rem;
+					}
 				}
 			}
 		}
