@@ -9,9 +9,14 @@ var App = function(){
 	this.arduino;
 	this.server
 	this.io;
-	this.isSocketConnected = false
+	this.isSocketConnected = false;
+	this.isArduinoAvailable = false;
 	this.socket;
 	this.cardSensor = 0;
+	//Tom's arduino
+	//this.arduinoPort = "/dev/tty.usbmodemfa121";
+	//Olly's arduino
+	this.arduinoPort = "/dev/tty.usbmodem411";
 };
 
 App.prototype = {
@@ -19,12 +24,14 @@ App.prototype = {
 		this.server = http.createServer( this.serverRequest );
 		this.server.listen( 3000 );
 		this.io = ws.listen( this.server, { log: false } );
-		this.socketsListen();
-		this.arduino = new SerialPort( "/dev/tty.usbmodemfa121", { baudrate: 115200, buffersize: 255 * 5 } );
+		this.socketsListen();		
+		this.arduino = new SerialPort( this.arduinoPort, { baudrate: 115200, buffersize: 255 * 5 } );	
 		this.arduinoListen();
+		console.log( __dirname );
 	},
 	serverRequest: function( request, response ){	
 		var that = this;
+		console.log( '"' + request.url + '"' );
 		var file = ( request.url === '/' ) ? 'index.html' : request.url;
 		fs.readFile( __dirname + '/public/' + file, function( error, data ){
 			if( error ){
