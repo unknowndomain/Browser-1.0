@@ -13,8 +13,8 @@ OscP5 oscP5;
 NetAddress destination;
 
 // Calibration positions
-float left_edge = 500;
-float right_edge = 500;
+float left_edge = 50;
+float right_edge = 50;
 
 // QR code globals
 float position = 0.0;
@@ -22,25 +22,30 @@ String msg = "";
 long last_detect = 0;
 boolean qr_present = false;
 
+// Modes
+boolean calibration = false;
+
 void setup() {
   // Setup canvas
-  size( 1280, 720 );
-  stroke(255);
-  fill( 255 );
-
+  size( 1280, 800 );
+  noSmooth();
+  textAlign( CENTER );
+  
+  // Load existing calibration data
+  loadCalibration();
+    
   // Setup camera and open camera settings
   cam = new Capture( this, width, height, Capture.list()[3], 30 );
-  cam.settings();
   
   // Start OSC
   oscP5 = new OscP5( this, 8000 );
   destination = new NetAddress( "127.0.0.1", 8000 );
-  
 }
 
 void draw() {
-   // If new camera data is available
+  // If new camera data is available
   if ( cam.available() == true ) {
+    stroke(255);
 
     // Read the data
     cam.read();
@@ -77,24 +82,21 @@ void draw() {
         // Get the location data.
         ResultPoint[] points = result.getResultPoints();
 
-        // Continuous calibration
+        if ( calibration )
+          calibrate( points[0].getX() );
         
-        // If the left edge is greater than the QR code position recalibrate
-        if ( left_edge > points[0].getX() )
-          left_edge = points[0].getX();
-
-        // If the right edge is less than than the QR code position recalibrate
-        if ( width - points[0].getX() < right_edge )
-          right_edge = width - points[0].getX();
-
-        // Draw a progress bar at the bottom
-        rect( 0, height - 10, map( points[0].getX(), left_edge, width - right_edge, 0, width ), height );
-
         // Calculate a new position number
         float new_position = map( points[0].getX(), left_edge, width - right_edge, 0, 1 );
         
         // Compare new position to old and if change is significant send an OSC message
-        if ( abs( new_position - position ) > 0.0001 ) {
+        if ( abs( new_position - position ) > 0.001 ) {
+          
+            if ( position > 1.0 )
+              position = 1.0;
+          
+            if ( position < 0.0 )
+              position = 0.0;
+          
             // Send new position
             OscMessage position_msg = new OscMessage( "/position" );
             position_msg.add( position );
@@ -114,7 +116,7 @@ void draw() {
       }
     } 
     catch ( Exception e ) {
-      if ( last_detect < ( millis() - 1000 ) && qr_present == true ) {
+      if ( last_detect < ( millis() - 1500 ) && qr_present == true ) {
             msg = "";
             qr_present = false;
             OscMessage position_msg = new OscMessage( "/msg" );
@@ -122,5 +124,50 @@ void draw() {
             oscP5.send( position_msg, destination );
       }
     }
+    if ( calibration ) {
+      noStroke();
+      fill( 255, 0, 0 );
+      rect( 0, 0, width, 25 );
+      fill( 255 );
+      text( "CALIBRATION MODE", width / 2 , 17 );
+    }
   }
+}
+
+void keyPressed() {
+  if ( key == 'c' ) {
+    calibration = ! calibration;
+    if ( ! calibration ) { 
+      saveCalibration();
+    }
+  }
+}
+
+void calibrate( float x ) {
+  // If the left edge is greater than the QR code position recalibrate
+  if ( x < width / 2 )
+    left_edge = x;
+  
+  // If the right edge is less than than the QR code position recalibrate
+  if ( x > width / 2 )
+    right_edge = width - x;
+  
+  // Draw a progress bar at the bottom
+  rect( 0, height - 10, map( x, left_edge, width - right_edge, 0, width ), height );
+}
+
+void loadCalibration() {
+  String calibration[] = loadStrings( "cal.txt" );
+  if ( calibration != null ) {
+    left_edge = Float.parseFloat( calibration[0] );
+    right_edge = Float.parseFloat( calibration[1] );
+    println( "Calibration Loaded." );
+  }
+}
+
+void saveCalibration() {
+  String calibration[] = new String[2];
+  calibration[0] = nf( left_edge, 0, 0 );
+  calibration[1] = nf( right_edge, 0, 0 );
+  saveStrings( "cal.txt", calibration );
 }
