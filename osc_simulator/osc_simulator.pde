@@ -54,13 +54,13 @@ void keyPressed() {
   switch ( key ) {
     case '1':
       decoded_msg = new OscMessage( "/msg" );
-      msg = "http://open.gdnm.org/tom-lynch";
+      msg = "http://open.gdnm.org/tavis-murray";
       decoded_msg.add( msg );
       oscP5.send( decoded_msg, destination );
       break;
     case '2':
       decoded_msg = new OscMessage( "/msg" );
-      msg = "http://open.gdnm.org/oliver-smith";
+      msg = "http://open.gdnm.org/jonathan-smith";
       decoded_msg.add( msg );
       oscP5.send( decoded_msg, destination );
       break;
