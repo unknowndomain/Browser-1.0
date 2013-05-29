@@ -68,7 +68,7 @@ App.prototype = {
 					that.cardSensor = button;
 					
 					if ( that.isSocketConnected )
-						that.socket.emit( 'osc-position-change', { position: mapValue( slider, 0, 1023, 0, 10 ) } );
+						that.socket.emit( 'osc-position-change', { position: mapValue( slider, 0, 1023, 0, 1 ) } );
 				}				
 	    	} );
 		} );
