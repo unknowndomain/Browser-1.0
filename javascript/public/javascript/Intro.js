@@ -11,18 +11,33 @@
 		this.h = this.$ele.height();
 
 		this.maxMoves = 12;
-		this.moveSizeX = 170;
-		this.moveSizeY = 170;
+		this.moveSizeX = 169.39;
+		this.moveSizeY = 169.39;
+
+
 		this.frameCount = 0;
-		this.frameInterval = 20;
+		this.frameInterval = 40;
 
 		console.log( this.$sprite );
 
 		this.animLoop;
-
+		this.size();
 	};
 
 	Intro.prototype = {
+		size: function(){
+			var x = Math.floor( this.w / this.moveSizeX );
+			var y = Math.floor( this.h / this.moveSizeY );
+			var newW = ( x * this.moveSizeX ) - 32.84;
+			var newH = ( y * this.moveSizeY ) - 30.84;
+			this.$sprite.width( newW );
+			this.$sprite.height( newH );
+			this.$sprite.css({
+				'margin-top' : newH * -0.5,
+				'margin-left' : newW * -0.5
+			});
+
+		},
 		run: function(){
 			console.log( 'run' );
 			this.loop();

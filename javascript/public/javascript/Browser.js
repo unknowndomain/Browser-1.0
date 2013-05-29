@@ -156,6 +156,8 @@
 			var loaded = 0;	
 			$text.width( textW );
 			
+			console.log( vidWidthAddition );
+
 			$imgs.each( function(){
 				$(this).on( 'load', function(){
 					loaded++;
