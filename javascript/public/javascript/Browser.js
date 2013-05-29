@@ -5,6 +5,7 @@
 		this.$ele = $( ele );
 		this.socketUrl = _socketUrl;
 		this.mode = 'attract';
+		this.attractAnim = new Intro( $( '.intro', this.$ele ) );
 	};
 
 	InteractiveBrowser.prototype = {
@@ -27,6 +28,8 @@
 				student: [],
 				mode: []
 			};
+
+			this.attractAnim.run();	
 
 			$( window ).on( 'resize', function(){
 				window.location = window.location;
@@ -90,13 +93,15 @@
 				this.$gallery.addClass( 'hidden' );
 				this.clearTimers( 'mode' );
 				var timer = setTimeout( function(){
-					that.$attractor.removeClass( 'hidden' );				
+					that.$attractor.removeClass( 'hidden' );	
+					that.attractAnim.run();	
 				}, _anim );
 				this.timers.mode.push( timer );
 			} else if( mode === 'browse' && this.mode !== 'browse' ){			
 				this.$attractor.addClass( 'hidden' );
 				this.clearTimers( 'mode' );
 				var timer = setTimeout( function(){
+					that.attractAnim.clear();
 					that.$browser.removeClass( 'hidden' );
 				}, _anim );
 				this.timers.mode.push( timer );
