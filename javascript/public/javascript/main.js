@@ -5,5 +5,6 @@
 	browser.prepare();
 	browser.run();
 
+	var offset = browser.attractAnim.moveSizeX;
 
 //})( jQuery );
