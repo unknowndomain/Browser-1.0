@@ -1,0 +1,5 @@
+“Shapes that we think of as random are in fact the products of complex shifting webs of numbers obeying simple rules.” Douglas Adams.
+
+‘Music and Fractal Landscapes’ is a short 3D animation inspired by the article of the same name in Douglas Adamís book Dirk Gentlyís Holistic Detective Agency. It explores the underlying mathematics behind Music and Nature, referencing the Fibonacci sequence and Phi.
+
+‘Music and Fractal Landscapes’ was created using Cinema 4D and After Effects, using mathematical formulas where appropriate to create geometry and to control the parameters of animations.

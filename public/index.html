@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Open GDNM</title>
+		<link rel="stylesheet" href="stylesheets/screen.css">
+		<script type="text/template" id="template-gallery">	
+				<ul class="scrollable" class="hideable">
+					{{ #media }}
+						<li>
+							{{#video }}
+								<video src="{{ video }}" />
+							{{/video}}
+							
+							{{#image }}
+								<img src="{{ image }}" />
+							{{/image }}
+						</li>
+					{{/media }}
+				</ul>			
+		</script>
+		<script type="text/template" id="template-info">			
+			<h1>{{ name }}</h1>						
+			<a>{{ url }}</a>
+			{{#tag}}
+				<img src="{{ tag }}"/>
+			{{/tag}}
+		</script>
+	</head>
+	<body>
+		<div id="app">			
+			<article id="attractor" class="hideable">
+				<header>
+					<h1>OPEN GDNM</h1>
+				</header>
+			</article>
+			<article id="browser" class="hideable">
+				<header class="hideable">
+
+				</header>	
+				<section class="hideable">
+					
+				</section>
+			</article>
+		</div>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="javascript/libs/jquery-2.0.0.min.js"></script>
+		<script src="javascript/libs/jquery.mustache.js"></script>
+		<script src="javascript/Browser.js"></script>
+		<script src="javascript/main.js"></script>
+	</body>
+</html>
