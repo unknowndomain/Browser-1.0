@@ -115,7 +115,7 @@ html, body {
 #attractor > header {
   font-family: "Scriber Bold";
   color: #FFFFFF;
-  font-size: 8rem;
+  font-size: 6rem;
   height: 1em;
   line-height: 1em;
   position: absolute;
@@ -139,7 +139,7 @@ html, body {
 /* line 71, ../sass/screen.scss */
 #browser > header h1 {
   font-family: "Scriber Bold";
-  font-size: 5rem;
+  font-size: 3.6rem;
   line-height: 1.3em;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -149,7 +149,7 @@ html, body {
   display: block;
   font-family: "Scriber Regular";
   letter-spacing: 1px;
-  font-size: 4rem;
+  font-size: 2.6rem;
   margin-bottom: .9em;
   color: #AAAAAA;
 }
