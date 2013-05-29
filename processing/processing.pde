@@ -31,12 +31,13 @@ void setup() {
 //  } else {
 //    println("Available cameras:");
 //    for (int i = 0; i < cameras.length; i++) {
-//      println(cameras[i]);
+//      println( cameras[i] );
 //    }
 //  }
 
   // Setup camera and open camera settings
-  cam = new Capture( this, Capture.list()[15] );
+  //Capture.list()[15]
+  cam = new Capture( this, "name=Microsoft¬Æ LifeCam HD-3000,size=1280x800,fps=30" );
   cam.start();
 
   // Start OSC
