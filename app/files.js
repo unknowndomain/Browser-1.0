@@ -3,7 +3,7 @@ var fs = require('fs');
 function getStudent( url, callback ) {
 	var e;
 	var regex = "^http://open.gdnm.org/([a-z-]+)$";
-	var directory = "../Data/";
+	var directory = "public/Data/";
 
 	// Check URL format is okay
 	if ( url.match( regex ) ) {
