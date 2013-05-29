@@ -15,6 +15,7 @@
   "dependencies": {
     "socket.io": "~0.9.14",
     "node-osc": "~0.1.2",
-    "camelot": "0.0.4"
+    "camelot": "0.0.4",
+    "imagesnap": "0.0.0"
   }
 }
