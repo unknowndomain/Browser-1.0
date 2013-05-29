@@ -24,16 +24,27 @@
 			this.$strip = $(); //we will cache this when a tempolate is rendered
 			this.$attractor = $( '#attractor', this.$ele );
 
-			this.timers = [];
+			this.timers = {
+				student: [],
+				mode: []
+			};
 
 			$( window ).on( 'resize', function(){
 				window.location = window.location;
 			});
 
 		},
-		clearTimers: function(){
-			for( var i = 0, len = this.timers.length; i < len; i++ ){
-				clearTimeout( this.timers[i] );
+		clearTimers: function( type ){
+			if( type ){
+				for( var i = 0, len = this.timers[ type ].length; i < len; i++ ){
+					clearTimeout( this.timers[ type ][ i ] );
+				}
+			} else {
+				for( type in this.timers ){
+					for( var i = 0, len = this.timers[ type ].length; i < len; i++ ){
+						clearTimeout( this.timers[ type ][ i ] );
+					}
+				}
 			}
 		},
 		run: function(){
@@ -78,18 +89,18 @@
 			if( mode === 'attract' && this.mode !== 'attract' ){				
 				this.$browser.addClass( 'hidden' );
 				this.$gallery.addClass( 'hidden' );
-				this.clearTimers();
+				this.clearTimers( 'mode' );
 				var timer = setTimeout( function(){
 					that.$attractor.removeClass( 'hidden' );				
 				}, _anim );
-				this.timers.push( timer );
+				this.timers.mode.push( timer );
 			} else if( mode === 'browse' && this.mode !== 'browse' ){			
 				this.$attractor.addClass( 'hidden' );
-				this.clearTimers();
+				this.clearTimers( 'mode' );
 				var timer = setTimeout( function(){
 					that.$browser.removeClass( 'hidden' );
 				}, _anim );
-				this.timers.push( timer );
+				this.timers.mode.push( timer );
 			}
 			this.mode = mode;
 		},
@@ -97,8 +108,10 @@
 			var that = this;
 						
 			this.$gallery.addClass('hidden');
-			this.$info.addClass('hidden');
-			this.clearTimers();
+			this.$info.addClass('hidden');	
+
+			this.clearTimers( 'student' );
+
 			var timer = setTimeout( function(){
 				that.$info.empty().append( that.templates.info( data ) );
 				that.$gallery.empty().append( that.templates.gallery( data ) );	
@@ -116,12 +129,12 @@
 							that.$gallery.removeClass( 'hidden' );
 							that.checkPosition();
 						}, _anim * 0.5 );
-						that.timers.push( timer );
+						that.timers.student.push( timer );
 					}, 1000);
-					that.timers.push( timer );
+					that.timers.student.push( timer );
 				});
 			}, _anim );
-			this.timers.push( timer );
+			this.timers.student.push( timer );
 		},
 		setupGallery: function( callback ){
 			var that = this;

@@ -189,10 +189,11 @@ html, body {
   *display: inline;
   min-width: auto;
   vertical-align: bottom;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
-/* line 111, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 #browser > section ul li img,
 #browser > section ul li video {
   height: 100%;
