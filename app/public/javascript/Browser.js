@@ -24,10 +24,17 @@
 			this.$strip = $(); //we will cache this when a tempolate is rendered
 			this.$attractor = $( '#attractor', this.$ele );
 
+			this.timers = [];
+
 			$( window ).on( 'resize', function(){
 				window.location = window.location;
 			});
 
+		},
+		clearTimers: function(){
+			for( var i = 0, len = this.timers.length; i < len; i++ ){
+				clearTimeout( this.timers[i] );
+			}
 		},
 		run: function(){
 			this.socketBindEvents();
@@ -71,15 +78,18 @@
 			if( mode === 'attract' && this.mode !== 'attract' ){				
 				this.$browser.addClass( 'hidden' );
 				this.$gallery.addClass( 'hidden' );
-				setTimeout( function(){
+				this.clearTimers();
+				var timer = setTimeout( function(){
 					that.$attractor.removeClass( 'hidden' );				
 				}, _anim );
-				
+				this.timers.push( timer );
 			} else if( mode === 'browse' && this.mode !== 'browse' ){			
 				this.$attractor.addClass( 'hidden' );
-				setTimeout( function(){
+				this.clearTimers();
+				var timer = setTimeout( function(){
 					that.$browser.removeClass( 'hidden' );
 				}, _anim );
+				this.timers.push( timer );
 			}
 			this.mode = mode;
 		},
@@ -88,8 +98,8 @@
 						
 			this.$gallery.addClass('hidden');
 			this.$info.addClass('hidden');
-
-			setTimeout( function(){
+			this.clearTimers();
+			var timer = setTimeout( function(){
 				that.$info.empty().append( that.templates.info( data ) );
 				that.$gallery.empty().append( that.templates.gallery( data ) );	
 				// cache the scrollable strip for speed
@@ -98,17 +108,20 @@
 				that.setupGallery( function(){
 					// show the title (for a while)
 					that.$info.removeClass( 'hidden' );
-					setTimeout( function(){	
+					var timer = setTimeout( function(){	
 						// hide the title
 						that.$info.addClass( 'hidden' );
-						setTimeout( function(){
+						var timer = setTimeout( function(){
 							// show the images
 							that.$gallery.removeClass( 'hidden' );
-							that.checkVideos();
+							that.checkPosition();
 						}, _anim * 0.5 );
+						that.timers.push( timer );
 					}, 1000);
+					that.timers.push( timer );
 				});
 			}, _anim );
+			this.timers.push( timer );
 		},
 		setupGallery: function( callback ){
 			var that = this;
