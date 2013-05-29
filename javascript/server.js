@@ -1,5 +1,6 @@
 //require necessary packages
-var http = require('http'),
+var osc = require( 'node-osc' ),
+	http = require( 'http' ),
 	ws = require( 'socket.io' ),
 	fs = require( 'fs' ),
 	gs = require( './files.js' ),
@@ -13,6 +14,8 @@ var App = function(){
 	this.isArduinoAvailable = false;
 	this.socket;
 	this.cardSensor = 0;
+	this.oscServer;
+	this.qr;
 };
 
 App.prototype = {
@@ -21,7 +24,9 @@ App.prototype = {
 		this.server = http.createServer( this.serverRequest );
 		this.server.listen( 3000 );
 		this.io = ws.listen( this.server, { log: false } );
-		this.socketsListen();		
+		this.socketsListen();
+		this.oscServer = new osc.Server( 8000, '127.0.0.1' );
+		this.oscListen();
 		fs.readdir( '/dev', function( e, ports ) {
 			// Find USB Modems (presume they are Arduinos)
 			 ports = ports.filter( function ( file ) {
@@ -85,18 +90,34 @@ App.prototype = {
 	sensorListen: function( oldValue, newValue ) {
 		var that = this;
 		
-		if ( oldValue && ! newValue )
+		if ( oldValue && ! newValue ) {
 			that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
-			
-		if ( ! oldValue && newValue )
-			gs.getStudent( 'http://open.gdnm.org/alba-santiago-blair', function ( e, data ) { 
-				if ( ! e ) {
-					that.socket.emit( 'osc-new', data );
-				} else {
-					console.log( e );
-					that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
+			that.qr = "";
+		}			
+	},
+	oscListen: function(){
+		var that = this;
+		this.oscServer.on( "message", function( msg, rinfo ){
+			if( that.isSocketConnected ){
+				switch( msg[0] ){
+					case "/qr":
+						if ( that.cardSensor && that.qr != msg[1] ) {
+							that.qr = msg[1]
+							gs.getStudent( that.qr, function ( e, data ) { 
+								if ( ! e ) {
+									that.socket.emit( 'osc-new', data );
+								} else {
+									console.log( e );
+									that.socket.emit( 'osc-disconnect', { message: 'bye bye' } );
+								}
+							} );
+						} else if ( msg[1] == "" ) {
+							that.qr = "";
+						}
+					break;
 				}
-			} );
+			}
+		} );
 	}
 }
 
