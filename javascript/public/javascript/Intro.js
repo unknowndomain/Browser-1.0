@@ -11,8 +11,8 @@
 		this.h = this.$ele.height();
 
 		this.maxMoves = 12;
-		this.moveSizeX = 169.25;
-		this.moveSizeY = 169.25;
+		this.moveSizeX = 170;
+		this.moveSizeY = 170;
 		this.frameCount = 0;
 		this.frameInterval = 20;
 
