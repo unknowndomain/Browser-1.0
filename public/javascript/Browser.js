@@ -137,6 +137,7 @@
 		},
 		setupGallery: function( callback ){
 			var that = this;
+			var winW = $(window).width();
 			var $imgs = $( 'img', this.$strip );
 			var $items = $( 'li', this.$strip );
 			var $text = $( '.blurb', this.$strip );
@@ -144,10 +145,12 @@
 			var vidCount = $vids.length;
 			var vidW = ( this.$strip.height() / 9 ) * 16;
 			var vidWidthAddition = vidW * vidCount;	
-			var textW = $text.width();
+			var textW = winW * 0.7;
 			var totalW = 0;
 			var toLoad = $imgs.length;
 			var loaded = 0;	
+			$text.width( textW );
+			
 			$imgs.each( function(){
 				$(this).on( 'load', function(){
 					loaded++;

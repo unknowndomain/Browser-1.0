@@ -212,7 +212,7 @@ html, body {
 /* line 122, ../sass/screen.scss */
 #browser > section ul li.blurb {
   padding: 2rem 0 2rem 0;
-  width: 600px;
+  width: 50rem;
   font-family: "Scriber Regular";
 }
 /* line 126, ../sass/screen.scss */
