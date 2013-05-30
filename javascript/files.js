@@ -26,13 +26,13 @@ function getStudent( url, callback ) {
 		var student = url.match( regex ).slice(1)[0];
 
 		// Check student directory exists
-		fs.exists( webroot +directory + student, function ( exists ) {
+		fs.exists( __dirname + "/" + "/" + webroot + directory + student, function ( exists ) {
 
 			// If it does...
 			if ( exists ) {
 		
 				// Grab the directory contents
-				fs.readdir( webroot +directory + student, function( e, files ) {
+				fs.readdir( __dirname + "/" + webroot + directory + student, function( e, files ) {
 
 					// Filter out .DS_Store and directories
 					 files = files.filter( function ( file ) {
@@ -40,7 +40,7 @@ function getStudent( url, callback ) {
 						 					 return false;
 						 if ( file == 'tag.png' )
 						 					 return false;
-						return fs.statSync( webroot + directory + student + '/' + file ).isFile();
+						return fs.statSync( __dirname + "/" + webroot + directory + student + '/' + file ).isFile();
 					} );
 	
 					// Report any errors
@@ -82,15 +82,15 @@ function getStudent( url, callback ) {
 							// If file is a video then add video: filename
 							} else if ( files[file].substr( -3, 3 ) == 'mp4' ) { 
 								var item = new Object();
-								item['video'] = student + '/' + files[file];
+								item['video'] = directory + student + '/' + files[file];
 								json['media'].push( item );
 							}
 						}
 				
 						// Process a bio from the directory name
-						fs.exists( webroot + directory + student + '/blurb.txt', function ( exists ) {
+						fs.exists( __dirname + "/" + webroot + directory + student + '/blurb.txt', function ( exists ) {
 							if ( exists ) {
-								fs.readFile( webroot + directory + student + '/blurb.txt', 'utf8', function ( e, data ) {
+								fs.readFile( __dirname + "/" + webroot + directory + student + '/blurb.txt', 'utf8', function ( e, data ) {
 									if ( ! e ) {
 										json['blurb'] = {'text': textToParagraphs( data ) };
 									} else {
