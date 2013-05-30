@@ -23,21 +23,26 @@ void setup() {
   noSmooth();
   textAlign( CENTER );
 
-//  String[] cameras = Capture.list();
-//
-//  if (cameras.length == 0) {
-//    println("There are no cameras available for capture.");
-//    exit();
-//  } else {
-//    println("Available cameras:");
-//    for (int i = 0; i < cameras.length; i++) {
+  String[] cameras = Capture.list();
+  String camera = "";
+
+  if (cameras.length == 0) {
+    println("There are no cameras available for capture.");
+    exit();
+  } else {
+    println("Available cameras:");
+    for (int i = 0; i < cameras.length; i++) {
+      if ( cameras[i].indexOf( "HD-3000" ) > 0 ) {
+        camera = cameras[i];
+        break;
+      }
 //      println( cameras[i] );
-//    }
-//  }
+    }
+  }
 
   // Setup camera and open camera settings
   //Capture.list()[15]
-  cam = new Capture( this, "name=Microsoft¬Æ LifeCam HD-3000,size=1280x800,fps=30" );
+  cam = new Capture( this, camera );
   cam.start();
 
   // Start OSC
