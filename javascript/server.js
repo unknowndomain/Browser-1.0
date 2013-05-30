@@ -70,15 +70,16 @@ App.prototype = {
 		var that = this;
 		this.arduino.on( 'open', function () {
 			that.arduino.on( 'data', function( data ) {
-				data = data.toString().trim();
-				if ( data.match( '^(0|1),([0-9]{1,4})$' ) ) {
-					var button = parseInt( data.match( '^(0|1),([0-9]{1,4})$' ).slice(1)[0] );
-					var slider = parseInt( data.match( '^(0|1),([0-9]{1,4})$' ).slice(1)[1] );
+				data = data.toString();
+				
+				if ( data.match(/(0|1),([0-9]{1,4})\r\n/) ) {
+					var button = parseInt( data.match( '(0|1),([0-9]{1,4})\r\n' ).slice(1)[0] );
+					var slider = parseInt( data.match( '(0|1),([0-9]{1,4})\r\n' ).slice(1)[1] );
 					
 					if ( that.isSocketConnected )
 						if ( that.cardSensor != button )
 							that.sensorListen( that.cardSensor, button );
-						
+					
 					that.cardSensor = button;
 					
 					if ( that.isSocketConnected )
