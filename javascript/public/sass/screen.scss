@@ -10,6 +10,10 @@
 
 $anim: .5;
 
+* {
+	cursor: none;
+}
+
 .hideable{
 	@include transition( opacity $anim+s ease-in-out );
 	opacity: 1;
